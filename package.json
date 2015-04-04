@@ -1,0 +1,34 @@
+{
+  "name": "tito-webhook",
+  "version": "1.0.0",
+  "description": "A HTTP middleware for Tito webhook requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshgillies/tito-webhook.git"
+  },
+  "keywords": [
+    "tito",
+    "webhook",
+    "middleware",
+    "http",
+    "express",
+    "connect"
+  ],
+  "author": "Josh Gillies <npm@joshgilli.es> (http://joshgilli.es/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshgillies/tito-webhook/issues"
+  },
+  "homepage": "https://github.com/joshgillies/tito-webhook",
+  "dependencies": {
+    "body": "^5.0.0"
+  },
+  "devDependencies": {
+    "standard": "^3.3.2",
+    "tape": "^4.0.0"
+  }
+}
