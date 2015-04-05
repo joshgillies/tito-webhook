@@ -1,0 +1,44 @@
+{
+  "name": "Paul Test",
+  "first_name": "Paul",
+  "last_name": "Test",
+  "email": "paul+test@rslw.com",
+  "reference": "A8FV-3",
+  "price": "1.00",
+  "slug": "pGZ3De1X3wLslG7yQwO7QFg",
+  "state_name": "complete",
+  "gender": "male",
+  "release_price": "1.00",
+  "discount_code_used": "",
+  "release": "AwesomeConf ticket",
+  "custom": "Awesome!",
+  "registration_id": "pbidGD4FWx7r47py0dYdDeg",
+  "answers": [
+    {
+      "question": {
+        "title": "Phone Number",
+        "description": "",
+        "id": 200
+      },
+      "response": "12345"
+    },
+    {
+      "question": {
+        "title": "Country",
+        "description": "",
+        "id": 1005357
+      },
+      "response": "IE"
+    }
+  ],
+  "registration": {
+    "total": "3.00",
+    "currency": "EUR",
+    "payment_reference": "ch_4MkyHRycVDKfCp",
+    "receipt": {
+      "total": "3.00",
+      "tax": "0.56",
+      "payment_provider": "Stripe"
+    }
+  }
+}
