@@ -3,11 +3,12 @@ var sendPlain = require('send-data/plain')
 
 module.exports = function (accessKey) {
   return function webhook (req, res, next) {
-    function makeError (statusCode, message) {
+    function makeError (message, statusCode) {
       var error = new Error(message)
       error.statusCode = statusCode || 500
       return error
     }
+
     function handleError (err) {
       sendPlain(req, res, {
         body: err.toString(),
@@ -29,16 +30,16 @@ module.exports = function (accessKey) {
         'ticket.reassigned'
       ]
       if (~accepted.indexOf(name)) jsonBody(req, res, handlePost)
-      else handleError(makeError(400, 'Unknown webhook name: ' + name))
+      else handleError(makeError('Unknown webhook name: ' + name, 400))
     }
 
     if (req.url === accessKey) {
       if (req.method === 'POST') {
         if (req.headers['x-webhook-name']) return processWebhook(req.headers['x-webhook-name'])
 
-        handleError(makeError(400, 'Missing header'))
+        handleError(makeError('Missing header', 400))
       } else {
-        handleError(makeError(405, 'Method not supported: ' + req.method))
+        handleError(makeError('Method not supported: ' + req.method, 405))
       }
     } else {
       next()
