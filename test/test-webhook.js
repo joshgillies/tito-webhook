@@ -70,6 +70,7 @@ test('malformed POST data', function (t) {
 
   serverStream.end('{"test":"what')
 })
+
 test('process webhook', function (t) {
   var rs = fs.createReadStream(__dirname + '/fixtures/example.json')
   var opts = {
