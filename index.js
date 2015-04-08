@@ -1,5 +1,4 @@
 var jsonBody = require('body/json')
-var sendPlain = require('send-data/plain')
 
 module.exports = function (accessKey) {
   return function webhook (req, res, next) {
@@ -10,10 +9,9 @@ module.exports = function (accessKey) {
     }
 
     function handleError (err) {
-      sendPlain(req, res, {
-        body: err.toString(),
-        statusCode: err.statusCode
-      })
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+      res.statusCode = err.statusCode
+      res.end(err.toString())
     }
 
     function handlePost (err, body) {

@@ -25,10 +25,11 @@
   },
   "homepage": "https://github.com/joshgillies/tito-webhook",
   "dependencies": {
-    "body": "^5.0.0",
-    "send-data": "^7.0.0"
+    "body": "^5.0.0"
   },
   "devDependencies": {
+    "connect": "^3.3.5",
+    "express": "^4.12.3",
     "servertest": "^1.2.0",
     "standard": "^3.3.2",
     "tape": "^4.0.0"
