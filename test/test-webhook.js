@@ -1,21 +1,22 @@
 var serverTest = require('servertest')
-var webhook = require('..')('/')
+var webhook = require('..')
 var test = require('tape')
 var http = require('http')
 var fs = require('fs')
 
+var _webhook = webhook('/', function done (err, data) {
+  if (err) return
+  console.log(JSON.stringify(data))
+})
+
 var app = http.createServer(function server (req, res) {
-  webhook(req, res, function onNext (err, data) {
-    res.statusCode = err ? 500 : 200
-    res.end(err ? err.toString() : 'ok')
-  })
+  _webhook(req, res)
 })
 
 test('unsupported HTTP methods', function (t) {
   serverTest(app, '/', { encoding: 'utf8', method: 'GET' }, function (err, res) {
     t.ifError(err, 'no error')
     t.equal(res.statusCode, 405, 'correct statusCode')
-    t.equal(res.body, 'Error: Method not supported: GET', 'correct body content')
     t.end()
   })
 })

@@ -1,7 +1,9 @@
 var jsonBody = require('body/json')
 
-module.exports = function (accessKey) {
-  return function webhook (req, res, next) {
+module.exports = function webhook (route, callback) {
+  if (!route) throw new TypeError('webhook access route required')
+
+  return function handler (req, res, next) {
     function makeError (message, statusCode) {
       var error = new Error(message)
       error.statusCode = statusCode || 500
@@ -15,8 +17,9 @@ module.exports = function (accessKey) {
     }
 
     function handlePost (err, body) {
-      if (err) return next(err)
-      next(null, body)
+      callback(err, body)
+      res.statusCode = err ? 500 : 200
+      res.end(err ? err.toString() : 'ok')
     }
 
     function processWebhook (name) {
@@ -31,16 +34,15 @@ module.exports = function (accessKey) {
       else handleError(makeError('Unknown webhook name: ' + name, 400))
     }
 
-    if (req.url === accessKey) {
-      if (req.method === 'POST') {
-        if (req.headers['x-webhook-name']) return processWebhook(req.headers['x-webhook-name'])
+    if (req.url !== route) return next()
 
-        handleError(makeError('Missing header', 400))
-      } else {
-        handleError(makeError('Method not supported: ' + req.method, 405))
-      }
-    } else {
-      next()
+    if (req.method !== 'POST') {
+      res.writeHead(req.method === 'OPTIONS' ? 200 : 405, {'Allow': 'OPTIONS, POST'})
+      res.end()
+      return
     }
+
+    if (req.headers['x-webhook-name']) return processWebhook(req.headers['x-webhook-name'])
+    else handleError(makeError('Missing header', 400))
   }
 }
