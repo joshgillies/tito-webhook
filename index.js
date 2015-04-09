@@ -42,7 +42,7 @@ module.exports = function webhook (route, callback) {
       return
     }
 
-    if (req.headers['x-webhook-name']) return processWebhook(req.headers['x-webhook-name'])
+    if (req.headers['x-webhook-name']) processWebhook(req.headers['x-webhook-name'])
     else handleError(makeError('Missing header', 400))
   }
 }
