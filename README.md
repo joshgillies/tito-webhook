@@ -9,15 +9,15 @@ A Node.js middleware for Tito webhook requests.
 var webhook = require('tito-webhook')
 var http = require('http')
 
-var _webhook = webhook('/')
+var _webhook = webhook('/', function done (err, data) {
+  if (err) console.log(err)
+  conosle.log(JSON.stringify(data))
+})
 
 var app = http.createServer(function server (req, res) {
-  _webhook(req, res, function onNext (err, data) {
-
-    conosle.log(JSON.stringify(data))
-
-    res.statusCode = err ? 500 : 200
-    res.end(err ? err.toString() : 'ok')
+  _webhook(req, res, function next () {
+    res.statusCode = 404
+    res.end()
   })
 })
 
