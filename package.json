@@ -1,7 +1,7 @@
 {
   "name": "tito-webhook",
   "version": "1.0.0",
-  "description": "A HTTP middleware for Tito webhook requests",
+  "description": "A Node.js middleware for Tito webhook requests",
   "main": "index.js",
   "scripts": {
     "test": "standard && tape test/*.js"
