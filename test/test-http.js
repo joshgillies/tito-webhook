@@ -6,7 +6,7 @@ var fs = require('fs')
 
 var _webhook = webhook('/', function done (err, data) {
   if (err) return
-  console.log(JSON.stringify(data))
+  // console.log(JSON.stringify(data))
 })
 
 var app = http.createServer(function server (req, res) {
