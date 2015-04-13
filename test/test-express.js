@@ -3,7 +3,7 @@ var webhook = require('..')
 var test = require('tape')
 var express = require('express')
 var http = require('http')
-var fs = require('fs')
+var spec = require('./spec')
 
 var webhookServer = express()
 
@@ -21,89 +21,19 @@ webhookServer.use('/test', function (req, res) {
 // so servertest can manage its life cycle
 var app = http.createServer(webhookServer)
 
-test('middleware passthrough', function (t) {
-  serverTest(app, '/test', { encoding: 'utf8', method: 'GET' }, function (err, res) {
-    t.ifError(err, 'no error')
-    t.equal(res.statusCode, 200, 'correct statusCode')
-    t.equal(res.body, 'passthrough', 'correct body content')
-    t.end()
+var tests = spec(app)
+
+test('Express', function (t) {
+  t.test('middleware passthrough', function (t) {
+    serverTest(app, '/test', { encoding: 'utf8', method: 'GET' }, function (err, res) {
+      t.ifError(err, 'no error')
+      t.equal(res.statusCode, 200, 'correct statusCode')
+      t.equal(res.body, 'passthrough', 'correct body content')
+      t.end()
+    })
   })
-})
-
-test('unsupported HTTP methods', function (t) {
-  serverTest(app, '/', { encoding: 'utf8', method: 'GET' }, function (err, res) {
-    t.ifError(err, 'no error')
-    t.equal(res.statusCode, 405, 'correct statusCode')
-    t.end()
+  Object.keys(tests).forEach(function runner (_test) {
+    t.test(_test, tests[_test])
   })
-})
-
-test('missing header \'x-webhook-name\'', function (t) {
-  var opts = {
-    encoding: 'utf8',
-    method: 'POST'
-  }
-  var serverStream = serverTest(app, '/', opts, function (err, res) {
-    t.ifError(err, 'no error')
-    t.equal(res.statusCode, 400, 'correct statusCode')
-    t.equal(res.body, 'Error: Missing header', 'correct body content')
-    t.end()
-  })
-
-  serverStream.end('test')
-})
-
-test('unknown \'x-webhook-name\' value', function (t) {
-  var opts = {
-    encoding: 'utf8',
-    method: 'POST',
-    headers: {
-      'x-webhook-name': 'fail'
-    }
-  }
-  var serverStream = serverTest(app, '/', opts, function (err, res) {
-    t.ifError(err, 'no error')
-    t.equal(res.statusCode, 400, 'correct statusCode')
-    t.equal(res.body, 'Error: Unknown webhook name: fail', 'correct body content')
-    t.end()
-  })
-
-  serverStream.end('test')
-})
-
-test('malformed POST data', function (t) {
-  var opts = {
-    encoding: 'utf8',
-    method: 'POST',
-    headers: {
-      'x-webhook-name': 'ticket.created'
-    }
-  }
-  var serverStream = serverTest(app, '/', opts, function (err, res) {
-    t.ifError(err, 'no error')
-    t.equal(res.statusCode, 500, 'correct statusCode')
-    t.equal(res.body, 'SyntaxError: Unexpected end of input', 'correct body content')
-    t.end()
-  })
-
-  serverStream.end('{"test":"what')
-})
-
-test('process webhook', function (t) {
-  var rs = fs.createReadStream(__dirname + '/fixtures/example.json')
-  var opts = {
-    encoding: 'utf8',
-    method: 'POST',
-    headers: {
-      'x-webhook-name': 'ticket.created'
-    }
-  }
-  var serverStream = serverTest(app, '/', opts, function (err, res) {
-    t.ifError(err, 'no error')
-    t.equal(res.statusCode, 200, 'correct statusCode')
-    t.equal(res.body, 'ok', 'correct body content')
-    t.end()
-  })
-
-  rs.pipe(serverStream)
+  t.end()
 })

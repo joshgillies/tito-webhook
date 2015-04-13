@@ -34,7 +34,10 @@ module.exports = function webhook (route, callback) {
       else handleError(makeError('Unknown webhook name: ' + name, 400))
     }
 
-    if (req.url !== route) return next()
+    if (req.url !== route) {
+      next()
+      return
+    }
 
     if (req.method !== 'POST') {
       res.writeHead(req.method === 'OPTIONS' ? 200 : 405, {'Allow': 'OPTIONS, POST'})
