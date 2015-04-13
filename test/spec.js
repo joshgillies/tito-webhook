@@ -18,7 +18,6 @@ module.exports = function tests (app) {
       var serverStream = serverTest(app, '/', opts, function (err, res) {
         t.ifError(err, 'no error')
         t.equal(res.statusCode, 400, 'correct statusCode')
-        t.equal(res.body, 'Error: Missing header', 'correct body content')
         t.end()
       })
 
@@ -35,7 +34,6 @@ module.exports = function tests (app) {
       var serverStream = serverTest(app, '/', opts, function (err, res) {
         t.ifError(err, 'no error')
         t.equal(res.statusCode, 400, 'correct statusCode')
-        t.equal(res.body, 'Error: Unknown webhook name: fail', 'correct body content')
         t.end()
       })
 
@@ -52,7 +50,6 @@ module.exports = function tests (app) {
       var serverStream = serverTest(app, '/', opts, function (err, res) {
         t.ifError(err, 'no error')
         t.equal(res.statusCode, 500, 'correct statusCode')
-        t.equal(res.body, 'SyntaxError: Unexpected end of input', 'correct body content')
         t.end()
       })
 
@@ -70,7 +67,6 @@ module.exports = function tests (app) {
       var serverStream = serverTest(app, '/', opts, function (err, res) {
         t.ifError(err, 'no error')
         t.equal(res.statusCode, 200, 'correct statusCode')
-        t.equal(res.body, 'ok', 'correct body content')
         t.end()
       })
 

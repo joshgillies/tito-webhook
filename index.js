@@ -13,13 +13,14 @@ module.exports = function webhook (route, callback) {
     function handleError (err) {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8')
       res.statusCode = err.statusCode
-      res.end(err.toString())
+      res.end(err.stack || err.toString())
     }
 
     function handlePost (err, body) {
       callback(err, body)
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8')
       res.statusCode = err ? 500 : 200
-      res.end(err ? err.toString() : 'ok')
+      res.end(err ? err.stack || err.toString() : 'ok')
     }
 
     function processWebhook (name) {
