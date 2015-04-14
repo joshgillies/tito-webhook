@@ -4,6 +4,16 @@ A Node.js middleware for Tito webhook requests.
 
 [![Build Status](https://travis-ci.org/joshgillies/tito-webhook.svg)](https://travis-ci.org/joshgillies/tito-webhook)
 
+## API
+
+### webhook(path, callback)
+
+Mounts the Tito webhook middleware at `path`.
+
+#### callback(err, data)
+
+The `callback` is called once a webhook request has been recieved.
+
 ## Example
 
 ### Vanilla `require('http')`:
@@ -58,10 +68,6 @@ app.use(webhook('/', function done (err, data) {
 
 app.listen(1337)
 ```
-
-## API
-
-### webhook(path, callback)
 
 ## License
 
